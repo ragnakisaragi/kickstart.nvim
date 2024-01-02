@@ -312,7 +312,8 @@ require('lazy').setup({
     end,
   },
   'stevearc/conform.nvim',
-  'Vimjas/vim-python-pep8-indent'
+  'Vimjas/vim-python-pep8-indent',
+  'wuelnerdotexe/vim-astro'
 }, {})
 
 -- [[ Setting options ]]
