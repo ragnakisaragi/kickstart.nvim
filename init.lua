@@ -384,12 +384,12 @@ require('lazy').setup({
             -- Your setup opts here
         },
     },
-    {
-        dir = '/home/l/Code/random-stuff/neo-plugins/first/'
-    },
-    {
-        dir = '/home/l/Code/random-stuff/whid/'
-    },
+    -- {
+    --     dir = '/home/l/Code/random-stuff/neo-plugins/first/'
+    -- },
+    -- {
+    --     dir = '/home/l/Code/random-stuff/whid/'
+    -- },
     'edgedb/edgedb-vim',
     {
         'GCBallesteros/jupytext.nvim',
@@ -408,6 +408,63 @@ require('lazy').setup({
         config = function()
             require("supermaven-nvim").setup({})
         end
+    },
+    {
+        "moniquelive/rfc.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim",
+        },
+        config = function()
+            require("telescope").load_extension("rfc")
+        end,
+    },
+    {
+        "rushjs1/nuxt-goto.nvim",
+        ft = "vue",
+    },
+    {
+        "folke/neoconf.nvim",
+        cmd = { "Neoconf", "NeoconfUpdate" },
+        opts = {}
+    },
+    -- {
+    --     'MeanderingProgrammer/render-markdown.nvim',
+    --     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },   -- if you use the mini.nvim suite
+    --     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+    --     dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    --     ---@module 'render-markdown'
+    --     ---@type render.md.UserConfig
+    --     opts = {},
+    -- },
+    {
+        "epwalsh/obsidian.nvim",
+        version = "*", -- recommended, use latest release instead of latest commit
+        lazy = true,
+        ft = "markdown",
+        -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+        -- event = {
+        --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+        --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
+        --   -- refer to `:h file-pattern` for more examples
+        --   "BufReadPre path/to/my-vault/*.md",
+        --   "BufNewFile path/to/my-vault/*.md",
+        -- },
+        dependencies = {
+            -- Required.
+            "nvim-lua/plenary.nvim",
+
+            -- see below for full list of optional dependencies 👇
+        },
+        opts = {
+            workspaces = {
+                {
+                    name = "personal",
+                    path = "~/Documents/Obsidian",
+                },
+            },
+            -- see below for full list of options 👇
+        },
     }
     -- append here
 }, {})
@@ -567,7 +624,7 @@ vim.keymap.set('n', '<leader>fb', require('telescope.builtin').buffers, { desc =
 vim.defer_fn(function()
     require('nvim-treesitter.configs').setup {
         -- Add languages to be installed here that you want installed for treesitter
-        ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+        ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'vue' , 'markdown', 'markdown_inline'},
 
         -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
         auto_install = false,
@@ -696,7 +753,9 @@ require('which-key').register({
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
 require('mason').setup()
-require('mason-lspconfig').setup()
+require('mason-lspconfig').setup({
+    ensure_installed = { 'volar' }
+})
 
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -722,6 +781,65 @@ local servers = {
             -- diagnostics = { disable = { 'missing-fields' } },
         },
     },
+    -- volar = {
+    --     init_options = {
+    --         vue = {
+    --             hybridMode = false,
+    --         },
+    --     },
+    --     settings = {
+    --         typescript = {
+    --             inlayHints = {
+    --                 enumMemberValues = {
+    --                     enabled = true,
+    --                 },
+    --                 functionLikeReturnTypes = {
+    --                     enabled = true,
+    --                 },
+    --                 propertyDeclarationTypes = {
+    --                     enabled = true,
+    --                 },
+    --                 parameterTypes = {
+    --                     enabled = true,
+    --                     suppressWhenArgumentMatchesName = true,
+    --                 },
+    --                 variableTypes = {
+    --                     enabled = true,
+    --                 },
+    --             },
+    --         },
+    --     },
+    -- },
+    --
+    -- ts_ls = {
+    --     init_options = {
+    --         plugins = {
+    --             {
+    --                 name = '@vue/typescript-plugin',
+    --                 location = vim.fn.stdpath 'data' ..
+    --                 '/mason/packages/vue-language-server/node_modules/@vue/language-server',
+    --                 languages = { 'vue' },
+    --             },
+    --         },
+    --     },
+    --     settings = {
+    --         typescript = {
+    --             tsserver = {
+    --                 useSyntaxServer = false,
+    --             },
+    --             inlayHints = {
+    --                 includeInlayParameterNameHints = 'all',
+    --                 includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+    --                 includeInlayFunctionParameterTypeHints = true,
+    --                 includeInlayVariableTypeHints = true,
+    --                 includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+    --                 includeInlayPropertyDeclarationTypeHints = true,
+    --                 includeInlayFunctionLikeReturnTypeHints = true,
+    --                 includeInlayEnumMemberValueHints = true,
+    --             },
+    --         },
+    --     },
+    -- },
 }
 
 -- Setup neovim lua configuration
@@ -910,3 +1028,18 @@ vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { noremap = true, si
 --     zindex = 20,     -- The Z-index of the context window
 --     on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
 -- }
+
+local lspconfig = require('lspconfig')
+
+lspconfig.volar.setup {
+    filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+    init_options = {
+        vue = {
+            hybridMode = false
+        }
+    }
+}
+
+-- require('render-markdown').setup({
+--     file_types = { 'markdown' }
+-- })
